@@ -2,6 +2,8 @@
 
 > Ask natural-language questions in your terminal and get the exact command you need.
 
+**mint** is a lightweight CLI tool that translates plain English into shell commands. Just describe what you want to do, and mint gives you the exact command to run.
+
 ```bash
 $ mint " mint how do I check how much VRAM I have"
 → nvidia-smi | grep "Memory"
