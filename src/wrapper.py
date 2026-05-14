@@ -1,7 +1,8 @@
 import os
 import sys
-from pathlib import Path
+import pyperclip
 from ollama import chat
+from pathlib import Path
 
 
 SCRIPT_PATH = str(Path.cwd()) + "/src/wrapper.py"
@@ -15,6 +16,7 @@ FUNCTION_BLOCK = f"""
     }}
     # <<< mint function <
 """
+# sudo apt-get install xclip
 
 args = sys.argv[1:] 
 # Not a serious project.
@@ -37,34 +39,36 @@ def llm_call(prompt):
     {
         'role': 'system',
         'content': (
-            "You are a specialized Linux Command Helper AI. "
-            "ONLY perform the following tasks: help user finding right linux command, "
-            "find the right command that user asks "
-            "Do not give lengthy answers just suggest command"
-            "You can suggest more than answer"
-            "Do not explain until asked about commands"
-            "CRITICAL: Output ONLY the raw response. "
-            "You are a technical merit evaluation engine."
-            "Output raw text or JSON only."
-            "NEVER use Markdown backticks (```) or code formatting in your response."
+            "You are a Linux command generator. "
+            "Your output must be a single line of executable bash code. "
+            "Do not use markdown. Do not use backticks (```). "
+            "Do not use quotes. Do not explain. Do not say 'Here is the command'. "
+            "If the request is for a task, output ONLY the command to perform it. "
+            "Example Input: how to list files\nExample Output: ls -la"   
             "DO NOT provide any conversational filler or introductory text."
-            "If the user asks for anything else (like recipes, general chat, or non-career advice), "
-            "politely refuse and state that you are only authorized for terminal command assistant."
+            "CASE 1: If the user asks for something unrelated to Linux or terminal commands (like jokes, recipes, or general chat), "
+            "output EXACTLY: ERR_NONSENSE"
+            "CASE 2: If the user asks for a Linux task but you genuinely do not know the command, "
+            "output EXACTLY: ERR_UNKNOWN"
         )
     },
     {
         'role': 'user',
         'content': prompt,
     },
-    ])
-    print(response.message.content)
+    ], options={'temperature': 0})
+
+    response_message = str(response.message.content)
+    if response_message not in ["ERR_NONSENSE", "ERR_UNKNOWN"]:
+        pyperclip.copy(response_message)
+    print(response_message)
 
 
 def main():
     if not already_added():
         add_function()
 
-    prompt = sys.argv[-1]
+    prompt = " ".join(sys.argv[1:])
     llm_call(prompt=prompt)
     
 
