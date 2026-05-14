@@ -7,7 +7,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 SCRIPT_PATH = str(PROJECT_ROOT / "src" / "wrapper.py")
-VENV_PYTHON = str(PROJECT_ROOT / ".venv" / "bin" / "python")
+VENV_PYTHON = "/usr/bin/python3"
 BASHRC_PATH = os.path.expanduser("~/.bashrc")
 
 MARKER = "# >>> mint function >>>"
@@ -62,8 +62,11 @@ def llm_call(prompt):
     ], options={'temperature': 0})
 
     response_message = str(response.message.content)
-    if response_message not in ["ERR_NONSENSE", "ERR_UNKNOWN"]:
-        pyperclip.copy(response_message)
+    try:
+        if response_message not in ["ERR_NONSENSE", "ERR_UNKNOWN"]:
+            pyperclip.copy(response_message)
+    except Exception:
+        pass # might fail in headless linux
     print(response_message)
 
 

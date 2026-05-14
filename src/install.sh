@@ -23,6 +23,9 @@ ollama serve > /dev/null 2>&1 &
 sleep 5
 ollama pull qwen2.5-coder:7b
 
+# Run wrapper.py using the VENV python, not the system python, we need that to copy item in clipboard
+echo "Registering 'mint' alias..."
+
 # Setup Python Virtual Environment at the ROOT
 echo "Setting up Python environment in project root..."
 python3 -m venv .venv
