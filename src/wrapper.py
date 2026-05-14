@@ -47,7 +47,7 @@ def llm_call(prompt):
             "Do not use markdown. Do not use backticks (```). "
             "Do not use quotes. Do not explain. Do not say 'Here is the command'. "
             "If the request is for a task, output ONLY the command to perform it. "
-            "Example Input: how to list files\nExample Output: ls -la"   
+            "Example Input: how to list files\nExample Output: ls -la command to install certain file or package"   
             "DO NOT provide any conversational filler or introductory text."
             "CASE 1: If the user asks for something unrelated to Linux or terminal commands (like jokes, recipes, or general chat), "
             "output EXACTLY: ERR_NONSENSE"
