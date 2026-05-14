@@ -3,6 +3,15 @@
 # Move to the root directory (one level up from src)
 cd "$(dirname "$0")/.." || exit
 
+echo "Checking system dependencies..."
+
+# Check for zstd (needed for Ollama) and python3-venv
+# We use 'dpkg' for Debian/Ubuntu systems
+if command -v apt-get &> /dev/null; then
+    echo "Updating system and installing dependencies (zstd, venv)..."
+    sudo apt-get update -y && sudo apt-get install -y zstd python3-venv
+fi
+
 # Install Ollama if not present
 if ! command -v ollama &> /dev/null; then
     echo "Installing Ollama..."
