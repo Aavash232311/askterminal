@@ -4,15 +4,18 @@ import pyperclip
 from ollama import chat
 from pathlib import Path
 
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
-SCRIPT_PATH = str(Path.cwd()) + "/src/wrapper.py"
+SCRIPT_PATH = str(PROJECT_ROOT / "src" / "wrapper.py")
+VENV_PYTHON = str(PROJECT_ROOT / ".venv" / "bin" / "python")
 BASHRC_PATH = os.path.expanduser("~/.bashrc")
-MARKER = "# >>> mint function >>>"  
+
+MARKER = "# >>> mint function >>>"
 
 FUNCTION_BLOCK = f"""
     {MARKER}
     mint() {{
-        /home/avash/Desktop/ai_terminal/.venv/bin/python "{SCRIPT_PATH}" "$@"
+       "{VENV_PYTHON}" "{SCRIPT_PATH}" "$@"
     }}
     # <<< mint function <
 """
