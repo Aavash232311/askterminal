@@ -1,6 +1,7 @@
 import os
 import sys
 import pyperclip
+import subprocess
 from ollama import chat
 from pathlib import Path
 
@@ -59,7 +60,7 @@ def llm_call(prompt):
         'role': 'user',
         'content': prompt,
     },
-    ], options={'temperature': 0})
+    ], options={'temperature': 0, 'keep_alive': 0})
 
     response_message = str(response.message.content)
     try:
@@ -76,6 +77,7 @@ def main():
 
     prompt = " ".join(sys.argv[1:])
     llm_call(prompt=prompt)
+    subprocess.run("ollama stop qwen2.5-coder:7b", shell=True)
     
 
 
